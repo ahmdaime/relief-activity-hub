@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Activity, TeamId, Question, AppContextType } from '../types';
-import { generateMathQuestion, SIMPULAN_BAHASA_DATA, PERIBAHASA_DATA, SCIENCE_QUESTIONS, SCRAMBLE_WORDS } from '../data/content';
+import { generateMathQuestion, SIMPULAN_BAHASA_DATA, PERIBAHASA_DATA, SCIENCE_QUESTIONS, SCRAMBLE_WORDS_DATA, scrambleWord, ScrambleWord } from '../data/content';
 import { COUNTRIES_DATA, Country } from '../data/countries';
 import { Check, X, Timer, Play, Pause, ArrowRight, Home, Zap, Send, Undo2, AlertTriangle, Flame, Siren, Target, Globe } from 'lucide-react';
 import { soundEngine } from '../utils/sounds';
@@ -60,6 +60,11 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
     const [wrongGuesses, setWrongGuesses] = useState(0);
     const MAX_WRONG_GUESSES = 6;
     const [hangmanUsedIndices, setHangmanUsedIndices] = useState<Set<number>>(new Set());
+
+    // ============ SCRAMBLE STATE ============
+    const [currentScrambleWord, setCurrentScrambleWord] = useState<ScrambleWord | null>(null);
+    const [scrambledLetters, setScrambledLetters] = useState<string>('');
+    const [scrambleUsedIndices, setScrambleUsedIndices] = useState<Set<number>>(new Set());
 
     // ============================================
 
@@ -182,8 +187,32 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
                 type: 'text'
             };
         } else {
-            const scrambleQ = SCRAMBLE_WORDS[(round - 1) % SCRAMBLE_WORDS.length];
-            q = scrambleQ;
+            // SCRAMBLE - Random selection with tracking
+            let availableIndices = SCRAMBLE_WORDS_DATA.map((_, idx) => idx)
+                .filter(idx => !scrambleUsedIndices.has(idx));
+
+            if (availableIndices.length === 0) {
+                availableIndices = SCRAMBLE_WORDS_DATA.map((_, idx) => idx);
+                setScrambleUsedIndices(new Set());
+            }
+
+            const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            setScrambleUsedIndices(prev => new Set(prev).add(randomIndex));
+
+            const wordData = SCRAMBLE_WORDS_DATA[randomIndex];
+            setCurrentScrambleWord(wordData);
+
+            // Generate dynamically scrambled letters
+            const scrambled = scrambleWord(wordData.word);
+            setScrambledLetters(scrambled);
+
+            q = {
+                id: `scramble-${randomIndex}`,
+                text: scrambled,
+                answer: wordData.word,
+                explanation: wordData.hint,
+                type: 'text'
+            };
         }
 
         setCurrentQuestion(q);
@@ -357,6 +386,11 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
             // For hangman, compare country names (case-insensitive, ignore spaces)
             const userGuess = String(answer).toUpperCase().replace(/\s/g, '');
             const correctAnswer = (currentCountry?.name || '').toUpperCase().replace(/\s/g, '');
+            isCorrect = userGuess === correctAnswer;
+        } else if (activity.type === 'scramble') {
+            // For scramble, compare words (case-insensitive, ignore spaces)
+            const userGuess = String(answer).toUpperCase().replace(/\s/g, '');
+            const correctAnswer = (currentScrambleWord?.word || '').toUpperCase().replace(/\s/g, '');
             isCorrect = userGuess === correctAnswer;
         } else {
             isCorrect = answer === currentQuestion?.answer;
@@ -693,6 +727,50 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
                                     </button>
                                 </form>
                             </div>
+                        ) : activity.type === 'scramble' ? (
+                            // Scramble steal: Type the word
+                            <div className="w-full max-w-xl">
+                                <div className="bg-slate-100 p-4 rounded-xl mb-4 border-2 border-slate-300">
+                                    <div className="flex items-center justify-center gap-3 mb-3">
+                                        {currentScrambleWord?.category && (
+                                            <span className="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm font-bold">{currentScrambleWord.category}</span>
+                                        )}
+                                        {currentScrambleWord?.hint && (
+                                            <span className="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm font-bold">{currentScrambleWord.hint}</span>
+                                        )}
+                                    </div>
+                                    <p className="text-lg text-slate-600 mb-2">Huruf yang perlu disusun:</p>
+                                    <p className="text-3xl font-mono font-black tracking-widest text-slate-800">
+                                        {scrambledLetters.split('').join(' ')}
+                                    </p>
+                                </div>
+                                <p className="text-xl text-slate-500 mb-4">Taip perkataan yang betul:</p>
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const guess = userInput.toUpperCase().trim();
+                                    const correct = currentScrambleWord?.word.toUpperCase() || '';
+                                    handleStealAttempt(guess === correct ? correct : guess);
+                                }} className="flex flex-col gap-4">
+                                    <input
+                                        type="text"
+                                        value={userInput}
+                                        onChange={(e) => setUserInput(e.target.value)}
+                                        placeholder="Taip perkataan..."
+                                        className={`w-full text-center text-3xl font-bold p-4 rounded-xl border-4 ${
+                                            stealAvailableFor === 'boys' ? 'border-blue-400 focus:border-blue-600' : 'border-pink-400 focus:border-pink-600'
+                                        } outline-none uppercase`}
+                                        autoFocus
+                                    />
+                                    <button
+                                        type="submit"
+                                        className={`w-full py-4 text-white text-2xl font-black rounded-xl border-4 border-slate-900 shadow-pop ${
+                                            stealAvailableFor === 'boys' ? 'bg-blue-500' : 'bg-pink-500'
+                                        }`}
+                                    >
+                                        CURI JAWAPAN!
+                                    </button>
+                                </form>
+                            </div>
                         ) : currentQuestion?.options ? (
                             <div className="grid grid-cols-2 gap-4">
                                 {currentQuestion.options.map((opt, idx) => (
@@ -730,9 +808,25 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
                 {/* Question Text */}
                 {activity.type === 'scramble' ? (
                     <div className="w-full flex flex-col items-center mb-10">
-                        <div className="mb-8 text-2xl text-slate-500 font-bold uppercase tracking-widest">SUSUN HURUF INI:</div>
+                        {/* Category & Hint */}
+                        <div className="flex items-center gap-4 mb-6">
+                            {currentScrambleWord?.category && (
+                                <div className="bg-purple-100 px-6 py-3 rounded-xl border-4 border-purple-300 shadow-sm">
+                                    <span className="text-sm font-bold text-purple-600 uppercase tracking-wide">Kategori:</span>
+                                    <p className="text-2xl font-black text-purple-800">{currentScrambleWord.category}</p>
+                                </div>
+                            )}
+                            {currentScrambleWord?.hint && (
+                                <div className="bg-yellow-100 px-6 py-3 rounded-xl border-4 border-yellow-300 shadow-sm">
+                                    <span className="text-sm font-bold text-yellow-600 uppercase tracking-wide">Petunjuk:</span>
+                                    <p className="text-2xl font-bold text-yellow-800">{currentScrambleWord.hint}</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="mb-6 text-2xl text-slate-500 font-bold uppercase tracking-widest">SUSUN HURUF INI:</div>
                         <div className="flex flex-wrap justify-center gap-4 mb-8">
-                            {currentQuestion?.text.split('').map((char, i) => (
+                            {scrambledLetters.split('').map((char, i) => (
                                 char !== ' ' ? (
                                     <div key={i} className="w-20 h-24 lg:w-24 lg:h-32 bg-white rounded-xl border-b-8 border-r-4 border-slate-900 shadow-md flex items-center justify-center text-5xl lg:text-6xl font-black text-slate-800 animate-bounce-slow" style={{ animationDelay: `${i * 0.1}s` }}>
                                         {char}

@@ -228,33 +228,145 @@ export const SCIENCE_QUESTIONS: Question[] = [
     { id: 'sc35', text: 'Matahari adalah sebuah bintang.', answer: true, type: 'boolean', explanation: 'Ia adalah bintang yang paling dekat dengan Bumi.' }
 ];
 
-export const SCRAMBLE_WORDS: Question[] = [
-    { id: 'w1', text: 'K U B A', answer: 'BUKU', explanation: 'Bahan bacaan' },
-    { id: 'w2', text: 'L O B A', answer: 'BOLA', explanation: 'Alat sukan bulat' },
-    { id: 'w3', text: 'H O S E L A K', answer: 'SEKOLAH', explanation: 'Tempat belajar' },
-    { id: 'w4', text: 'G I C K U', answer: 'CIKGU', explanation: 'Orang yang mengajar' },
-    { id: 'w5', text: 'M A P E D A M', answer: 'PEMADAM', explanation: 'Alat tulis' },
-    { id: 'w6', text: 'T E R E K A', answer: 'KERETA', explanation: 'Kenderaan empat roda' },
-    { id: 'w7', text: 'K U C G I N', answer: 'KUCING', explanation: 'Haiwan peliharaan' },
-    { id: 'w8', text: 'P I N S E L', answer: 'PENSEL', explanation: 'Alat tulis kayu' },
-    { id: 'w9', text: 'K E R U S I', answer: 'KERUSI', explanation: 'Tempat duduk' },
-    { id: 'w10', text: 'M A K A N A N', answer: 'MAKANAN', explanation: 'Benda yang dimakan' },
-    { id: 'w11', text: 'M I N U M A N', answer: 'MINUMAN', explanation: 'Air untuk diminum' },
-    { id: 'w12', text: 'T E L E F O N', answer: 'TELEFON', explanation: 'Alat komunikasi' },
-    { id: 'w13', text: 'K A M P U G N', answer: 'KAMPUNG', explanation: 'Kawasan desa' },
-    { id: 'w14', text: 'B A S I K A L', answer: 'BASIKAL', explanation: 'Kenderaan dua roda' },
-    { id: 'w15', text: 'S A Y U R A N', answer: 'SAYURAN', explanation: 'Makanan sihat hijau' },
-    { id: 'w16', text: 'H O S P I T A L', answer: 'HOSPITAL', explanation: 'Tempat rawatan' },
-    { id: 'w17', text: 'P O L I S', answer: 'POLIS', explanation: 'Penjaga keamanan' },
-    { id: 'w18', text: 'B O M B A', answer: 'BOMBA', explanation: 'Pemadam api' },
-    { id: 'w19', text: 'D O K T O R', answer: 'DOKTOR', explanation: 'Merawat pesakit' },
-    { id: 'w20', text: 'G A J A H', answer: 'GAJAH', explanation: 'Haiwan darat terbesar' },
-    { id: 'w21', text: 'H A R I M A U', answer: 'HARIMAU', explanation: 'Raja rimba' },
-    { id: 'w22', text: 'M A T A H A R I', answer: 'MATAHARI', explanation: 'Sumber cahaya bumi' },
-    { id: 'w23', text: 'B I N T A N G', answer: 'BINTANG', explanation: 'Berkelip di langit malam' },
-    { id: 'w24', text: 'P E L A N G I', answer: 'PELANGI', explanation: 'Tujuh warna di langit' },
-    { id: 'w25', text: 'K O M P U T E R', answer: 'KOMPUTER', explanation: 'Alat teknologi canggih' }
+// Data untuk Susun Huruf dengan kategori
+export interface ScrambleWord {
+    word: string;
+    category: string;
+    hint: string;
+}
+
+export const SCRAMBLE_WORDS_DATA: ScrambleWord[] = [
+    // HAIWAN (15)
+    { word: 'KUCING', category: 'Haiwan', hint: 'Haiwan peliharaan berbulu' },
+    { word: 'ANJING', category: 'Haiwan', hint: 'Kawan setia manusia' },
+    { word: 'GAJAH', category: 'Haiwan', hint: 'Haiwan darat terbesar' },
+    { word: 'HARIMAU', category: 'Haiwan', hint: 'Raja rimba' },
+    { word: 'ARNAB', category: 'Haiwan', hint: 'Telinga panjang, suka lobak' },
+    { word: 'BURUNG', category: 'Haiwan', hint: 'Boleh terbang' },
+    { word: 'IKAN', category: 'Haiwan', hint: 'Hidup dalam air' },
+    { word: 'ULAR', category: 'Haiwan', hint: 'Reptilia panjang tanpa kaki' },
+    { word: 'KUDA', category: 'Haiwan', hint: 'Haiwan tunggang' },
+    { word: 'LEMBU', category: 'Haiwan', hint: 'Menghasilkan susu' },
+    { word: 'KAMBING', category: 'Haiwan', hint: 'Korban hari raya' },
+    { word: 'AYAM', category: 'Haiwan', hint: 'Berkokok pada pagi' },
+    { word: 'ITIK', category: 'Haiwan', hint: 'Kuak kuak' },
+    { word: 'MONYET', category: 'Haiwan', hint: 'Suka memanjat pokok' },
+    { word: 'ZIRAFAH', category: 'Haiwan', hint: 'Leher paling panjang' },
+
+    // MAKANAN (15)
+    { word: 'NASI', category: 'Makanan', hint: 'Makanan ruji Malaysia' },
+    { word: 'AYAM', category: 'Makanan', hint: 'Daging putih popular' },
+    { word: 'IKAN', category: 'Makanan', hint: 'Protein dari laut' },
+    { word: 'SAYUR', category: 'Makanan', hint: 'Hijau dan berkhasiat' },
+    { word: 'BUAH', category: 'Makanan', hint: 'Manis dan segar' },
+    { word: 'ROTI', category: 'Makanan', hint: 'Sarapan pagi' },
+    { word: 'TELUR', category: 'Makanan', hint: 'Dari ayam' },
+    { word: 'SUSU', category: 'Makanan', hint: 'Minuman putih berkhasiat' },
+    { word: 'KEJU', category: 'Makanan', hint: 'Produk tenusu' },
+    { word: 'PIZZA', category: 'Makanan', hint: 'Makanan Itali bulat' },
+    { word: 'BURGER', category: 'Makanan', hint: 'Roti dengan daging' },
+    { word: 'LAKSA', category: 'Makanan', hint: 'Makanan berkuah pedas' },
+    { word: 'SATAY', category: 'Makanan', hint: 'Cucuk dan bakar' },
+    { word: 'DURIAN', category: 'Makanan', hint: 'Raja buah-buahan' },
+    { word: 'MANGGA', category: 'Makanan', hint: 'Buah kuning manis' },
+
+    // KENDERAAN (12)
+    { word: 'KERETA', category: 'Kenderaan', hint: 'Empat roda' },
+    { word: 'BAS', category: 'Kenderaan', hint: 'Pengangkutan awam besar' },
+    { word: 'LORI', category: 'Kenderaan', hint: 'Angkut barang berat' },
+    { word: 'KAPAL', category: 'Kenderaan', hint: 'Belayar di laut' },
+    { word: 'BASIKAL', category: 'Kenderaan', hint: 'Dua roda, kayuh' },
+    { word: 'TEKSI', category: 'Kenderaan', hint: 'Sewa untuk pergi' },
+    { word: 'TREN', category: 'Kenderaan', hint: 'Bergerak atas landasan' },
+    { word: 'HELIKOPTER', category: 'Kenderaan', hint: 'Terbang dengan kipas' },
+    { word: 'MOTOSIKAL', category: 'Kenderaan', hint: 'Dua roda berenjin' },
+    { word: 'AMBULANS', category: 'Kenderaan', hint: 'Kenderaan kecemasan' },
+    { word: 'FERI', category: 'Kenderaan', hint: 'Angkut kereta merentas laut' },
+    { word: 'ROKET', category: 'Kenderaan', hint: 'Pergi ke angkasa' },
+
+    // TEMPAT (15)
+    { word: 'SEKOLAH', category: 'Tempat', hint: 'Tempat belajar' },
+    { word: 'HOSPITAL', category: 'Tempat', hint: 'Tempat rawatan' },
+    { word: 'MASJID', category: 'Tempat', hint: 'Tempat ibadah Islam' },
+    { word: 'GEREJA', category: 'Tempat', hint: 'Tempat ibadah Kristian' },
+    { word: 'KUIL', category: 'Tempat', hint: 'Tempat ibadah Hindu' },
+    { word: 'PASAR', category: 'Tempat', hint: 'Tempat jual beli' },
+    { word: 'RUMAH', category: 'Tempat', hint: 'Tempat tinggal' },
+    { word: 'PEJABAT', category: 'Tempat', hint: 'Tempat bekerja' },
+    { word: 'STADIUM', category: 'Tempat', hint: 'Tempat sukan besar' },
+    { word: 'PERPUSTAKAAN', category: 'Tempat', hint: 'Tempat pinjam buku' },
+    { word: 'RESTORAN', category: 'Tempat', hint: 'Tempat makan' },
+    { word: 'LAPANGAN', category: 'Tempat', hint: 'Tempat bermain' },
+    { word: 'PANTAI', category: 'Tempat', hint: 'Tepi laut berpasir' },
+    { word: 'GUNUNG', category: 'Tempat', hint: 'Tinggi menjulang' },
+    { word: 'HUTAN', category: 'Tempat', hint: 'Penuh pokok' },
+
+    // PEKERJAAN (12)
+    { word: 'DOKTOR', category: 'Pekerjaan', hint: 'Merawat pesakit' },
+    { word: 'CIKGU', category: 'Pekerjaan', hint: 'Mengajar murid' },
+    { word: 'POLIS', category: 'Pekerjaan', hint: 'Menjaga keamanan' },
+    { word: 'BOMBA', category: 'Pekerjaan', hint: 'Memadam api' },
+    { word: 'JURUTERA', category: 'Pekerjaan', hint: 'Reka dan bina' },
+    { word: 'PEGUAM', category: 'Pekerjaan', hint: 'Wakil di mahkamah' },
+    { word: 'JURURAWAT', category: 'Pekerjaan', hint: 'Bantu doktor' },
+    { word: 'CHEF', category: 'Pekerjaan', hint: 'Tukang masak' },
+    { word: 'PILOT', category: 'Pekerjaan', hint: 'Terbangkan kapal terbang' },
+    { word: 'ASKAR', category: 'Pekerjaan', hint: 'Pertahan negara' },
+    { word: 'NELAYAN', category: 'Pekerjaan', hint: 'Tangkap ikan' },
+    { word: 'PETANI', category: 'Pekerjaan', hint: 'Tanam tanaman' },
+
+    // BENDA/OBJEK (15)
+    { word: 'BUKU', category: 'Benda', hint: 'Untuk dibaca' },
+    { word: 'PENSEL', category: 'Benda', hint: 'Alat tulis kayu' },
+    { word: 'MEJA', category: 'Benda', hint: 'Tempat letak barang' },
+    { word: 'KERUSI', category: 'Benda', hint: 'Tempat duduk' },
+    { word: 'TELEFON', category: 'Benda', hint: 'Alat komunikasi' },
+    { word: 'KOMPUTER', category: 'Benda', hint: 'Alat teknologi' },
+    { word: 'TELEVISYEN', category: 'Benda', hint: 'Kotak ajaib' },
+    { word: 'PETI', category: 'Benda', hint: 'Simpan barang' },
+    { word: 'LAMPU', category: 'Benda', hint: 'Beri cahaya' },
+    { word: 'KIPAS', category: 'Benda', hint: 'Beri angin' },
+    { word: 'CERMIN', category: 'Benda', hint: 'Lihat pantulan' },
+    { word: 'JAM', category: 'Benda', hint: 'Tunjuk masa' },
+    { word: 'KUNCI', category: 'Benda', hint: 'Buka pintu' },
+    { word: 'BOLA', category: 'Benda', hint: 'Untuk sukan' },
+    { word: 'PAYUNG', category: 'Benda', hint: 'Lindung dari hujan' },
+
+    // ALAM SEMULAJADI (10)
+    { word: 'MATAHARI', category: 'Alam', hint: 'Sumber cahaya' },
+    { word: 'BULAN', category: 'Alam', hint: 'Menerangi malam' },
+    { word: 'BINTANG', category: 'Alam', hint: 'Berkelip di langit' },
+    { word: 'AWAN', category: 'Alam', hint: 'Putih di langit' },
+    { word: 'HUJAN', category: 'Alam', hint: 'Air dari langit' },
+    { word: 'PELANGI', category: 'Alam', hint: 'Tujuh warna' },
+    { word: 'SUNGAI', category: 'Alam', hint: 'Air mengalir' },
+    { word: 'LAUT', category: 'Alam', hint: 'Air masin luas' },
+    { word: 'POKOK', category: 'Alam', hint: 'Tumbuhan besar' },
+    { word: 'BUNGA', category: 'Alam', hint: 'Cantik dan wangi' },
 ];
+
+// Fungsi untuk kacau huruf secara rawak
+export const scrambleWord = (word: string): string => {
+    const letters = word.split('');
+    for (let i = letters.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [letters[i], letters[j]] = [letters[j], letters[i]];
+    }
+    // Pastikan hasil berbeza dari asal
+    if (letters.join('') === word && word.length > 1) {
+        return scrambleWord(word);
+    }
+    return letters.join('');
+};
+
+// Untuk backward compatibility
+export const SCRAMBLE_WORDS: Question[] = SCRAMBLE_WORDS_DATA.map((item, idx) => ({
+    id: `sw-${idx}`,
+    text: item.word, // Will be scrambled in ActivityGame
+    answer: item.word,
+    explanation: item.hint,
+    type: 'text' as const
+}));
 
 export const generateMathQuestion = (difficulty: 'Mudah' | 'Sederhana' | 'Mencabar'): Question => {
     let num1, num2, operator, ans;
