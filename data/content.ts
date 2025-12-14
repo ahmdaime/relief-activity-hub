@@ -1,0 +1,279 @@
+
+import { Activity, Question, SimpulanData } from '../types';
+import { BookOpen, Calculator, FlaskConical, Type, Palette, Brain, ScrollText } from 'lucide-react';
+
+export const ACTIVITIES: Activity[] = [
+    {
+        id: 'simpulan-bahasa',
+        title: 'Simpulan Bahasa',
+        icon: BookOpen,
+        subject: 'Bahasa Melayu',
+        duration: 20,
+        difficulty: 'Sederhana',
+        type: 'quiz',
+        description: 'Jawab soalan simpulan bahasa secara bergilir (30 Pusingan). Salah jawab, tolak markah!'
+    },
+    {
+        id: 'peribahasa-challenge',
+        title: 'Peribahasa',
+        icon: ScrollText,
+        subject: 'Bahasa Melayu',
+        duration: 20,
+        difficulty: 'Mencabar',
+        type: 'quiz',
+        description: 'Uji minda dengan 30 peribahasa melayu! Giliran adil. Penalti jika salah.'
+    },
+    {
+        id: 'math-quickfire',
+        title: 'Math Quick Fire',
+        icon: Calculator,
+        subject: 'Matematik',
+        duration: 10,
+        difficulty: 'Mencabar',
+        type: 'math',
+        description: 'Siapa cepat dia dapat! Selesaikan masalah matematik (30 Pusingan). Awas penalti!'
+    },
+    {
+        id: 'sains-fakta',
+        title: 'Sains: Benar/Palsu',
+        icon: FlaskConical,
+        subject: 'Sains',
+        duration: 12,
+        difficulty: 'Sederhana',
+        type: 'science',
+        description: 'Tentukan fakta sains Benar/Palsu (30 Pusingan). Markah ditolak jika salah.'
+    },
+    {
+        id: 'word-scramble',
+        title: 'Susun Huruf',
+        icon: Type,
+        subject: 'B. Inggeris / BM',
+        duration: 15,
+        difficulty: 'Mudah',
+        type: 'scramble',
+        description: 'Susun semula huruf menjadi perkataan yang betul. Jangan salah eja!'
+    },
+];
+
+// DATASETS
+export const SIMPULAN_BAHASA_DATA: SimpulanData[] = [
+    { idiom: "Bagai aur dengan tebing", meaning: "Sangat rapat atau tolong-menolong", example: "Penduduk kampung itu hidup bagai aur dengan tebing." },
+    { idiom: "Ajak-ajak ayam", meaning: "Ajakan yang tidak bersungguh-sungguh", example: "Dia hanya ajak-ajak ayam, janganlah awak percaya." },
+    { idiom: "Akal kancil", meaning: "Orang yang pandai menipu atau tipu helah", example: "Peniaga itu mempunyai akal kancil untuk melariskan jualannya." },
+    { idiom: "Alas perut", meaning: "Makan sedikit untuk menghilangkan lapar", example: "Jamahlah kuih ini sedikit sebagai alas perut." },
+    { idiom: "Alim-alim kucing", meaning: "Pura-pura baik", example: "Jangan percaya sangat, dia itu cuma alim-alim kucing." },
+    { idiom: "Ambil angin", meaning: "Bersiar-siar untuk melapangkan fikiran", example: "Petang nanti kita pergi ambil angin di taman." },
+    { idiom: "Ambil berat", meaning: "Memberi perhatian atau prihatin", example: "Cikgu Aime sangat ambil berat tentang kehadiran murid." },
+    { idiom: "Anak emas", meaning: "Orang yang sangat disayangi oleh majikan atau keluarga", example: "Ali ialah anak emas di syarikat itu kerana kerajinannya." },
+    { idiom: "Angkat bakul", meaning: "Suka memuji diri sendiri", example: "Sikapnya yang suka angkat bakul menyebabkan kawan-kawan meluat." },
+    { idiom: "Angkat kaki", meaning: "Melarikan diri atau meninggalkan sesuatu tempat", example: "Pencuri itu segera angkat kaki apabila polis tiba." },
+    { idiom: "Atas pagar", meaning: "Tidak menyebelahi mana-mana pihak", example: "Dalam perbalahan itu, dia mengambil sikap atas pagar." },
+    { idiom: "Ayam tambatan", meaning: "Orang harapan dalam sesuatu pasukan", example: "Ronaldo ialah ayam tambatan pasukan itu." },
+    { idiom: "Bahasa halus", meaning: "Kata-kata yang sopan dan lembut", example: "Gunakanlah bahasa halus apabila bercakap dengan orang tua." },
+    { idiom: "Batu api", meaning: "Orang yang suka menghasut", example: "Jangan jadi batu api yang memecahbelahkan persahabatan mereka." },
+    { idiom: "Batu loncatan", meaning: "Sesuatu yang dijadikan alat untuk mencapai hajat", example: "Pekerjaan ini hanyalah batu loncatan untuk jawatan lebih tinggi." },
+    { idiom: "Bau-bau bacang", meaning: "Talian persaudaraan yang jauh", example: "Saya dengan dia ada bau-bau bacang." },
+    { idiom: "Bekas tangan", meaning: "Hasil kerja tangan seseorang", example: "Lukisan cantik ini adalah bekas tangan abang saya." },
+    { idiom: "Bendera setengah tiang", meaning: "Tanda berdukacita atas kematian pembesar", example: "Bendera dikibarkan separuh tiang sempena kemangkatan Raja." },
+    { idiom: "Berat hati", meaning: "Enggan atau tidak sampai hati melakukan sesuatu", example: "Ibu berat hati hendak melepaskan anaknya pergi jauh." },
+    { idiom: "Berat mulut", meaning: "Pendiam atau susah hendak bercakap", example: "Budak yang berat mulut itu jarang bergaul dengan orang." },
+    { idiom: "Berat tulang", meaning: "Malas bekerja", example: "Jangan jadi berat tulang, tolonglah ibu di dapur." },
+    { idiom: "Beri muka", meaning: "Terlalu memanjakan seseorang", example: "Jangan terlalu beri muka kepada anak, nanti naik kepala." },
+    { idiom: "Bermuka dua", meaning: "Tidak jujur atau menyebelahi kedua-dua pihak", example: "Sikap bermuka dua Ahmad akhirnya terbongkar." },
+    { idiom: "Besar hati", meaning: "Berasa gembira atau bangga", example: "Kami berbesar hati menerima kunjungan tuan." },
+    { idiom: "Besar kepala", meaning: "Degil atau sukar menerima nasihat", example: "Murid yang besar kepala itu sering melanggar peraturan." },
+    { idiom: "Bidan terjun", meaning: "Orang yang disuruh melakukan sesuatu secara mendadak", example: "Saya terpaksa jadi bidan terjun mengacara majlis itu." },
+    { idiom: "Bodoh sepat", meaning: "Kelihatan bodoh tetapi sebenarnya cerdik", example: "Dia itu bodoh sepat, dalam diam dia siapkan kerja." },
+    { idiom: "Bongkok sabut", meaning: "Bongkok orang tua", example: "Nenek berjalan bongkok sabut kerana usianya lanjut." },
+    { idiom: "Buah fikiran", meaning: "Pendapat atau idea", example: "Sila berikan buah fikiran anda dalam mesyuarat nanti." },
+    { idiom: "Buah mulut", meaning: "Perkara yang menjadi sebutan ramai", example: "Kejadian itu menjadi buah mulut penduduk kampung." },
+    { idiom: "Buaya darat", meaning: "Lelaki yang suka menukar teman wanita", example: "Jauhi lelaki buaya darat itu." },
+    { idiom: "Buku lima", meaning: "Penumbuk", example: "Dia menunjuk buku lima tanda marah." },
+    { idiom: "Bulat hati", meaning: "Tekad atau bersungguh-sungguh", example: "Dia sudah bulat hati untuk belajar di luar negara." },
+    { idiom: "Buruk siku", meaning: "Meminta balik barang yang telah diberi", example: "Jangan buruk siku, hadiah itu sudah jadi milik dia." },
+    { idiom: "Busuk hati", meaning: "Hati yang jahat atau dengki", example: "Orang yang busuk hati tidak akan tenang hidupnya." },
+    { idiom: "Buta huruf", meaning: "Tidak tahu membaca dan menulis", example: "Kelas dewasa diadakan untuk membasmi buta huruf." },
+    { idiom: "Cacing kepanasan", meaning: "Gelisah atau tidak tentu arah", example: "Dia gelisah seperti cacing kepanasan menunggu keputusan." },
+    { idiom: "Cahaya mata", meaning: "Anak", example: "Pasangan itu baru menimang cahaya mata pertama." },
+    { idiom: "Cakap besar", meaning: "Suka meninggi diri atau bermegah-megah", example: "Dia suka cakap besar kononnya dia kaya." },
+    { idiom: "Cakar ayam", meaning: "Tulisan yang buruk dan sukar dibaca", example: "Tulisan doktor itu seperti cakar ayam." },
+    { idiom: "Campur tangan", meaning: "Masuk campur dalam urusan orang lain", example: "Jangan campur tangan dalam hal rumah tangga mereka." },
+    { idiom: "Cangkul angin", meaning: "Melakukan perbuatan yang sia-sia", example: "Nasihat itu ibarat cangkul angin kerana tidak didengar." },
+    { idiom: "Curi tulang", meaning: "Mengelak daripada bekerja", example: "Pekerja itu dimarahi kerana asyik curi tulang." },
+    { idiom: "Darah daging", meaning: "Anak kandung atau saudara mara sendiri", example: "Walaupun jahat, dia tetap darah daging saya." },
+    { idiom: "Durian runtuh", meaning: "Keuntungan yang diperoleh tanpa disangka-sangka", example: "Dia dapat durian runtuh apabila menang cabutan bertuah." },
+    { idiom: "Gaji buta", meaning: "Menerima gaji tanpa bekerja bersungguh-sungguh", example: "Kerani itu makan gaji buta, asyik main telefon sahaja." },
+    { idiom: "Garam hidup", meaning: "Pengalaman hidup", example: "Datuk banyak makan garam hidup berbanding kamu." },
+    { idiom: "Gelap mata", meaning: "Hilang pertimbangan kerana wang atau marah", example: "Dia gelap mata melihat wang rasuah yang banyak itu." },
+    { idiom: "Hati batu", meaning: "Degil atau tidak menaruh belas kasihan", example: "Susah menasihati orang yang hati batu ini." },
+    { idiom: "Hidung tinggi", meaning: "Sombong atau angkuh", example: "Sejak kaya, dia menjadi hidung tinggi." },
+    { idiom: "Hilang akal", meaning: "Bingung atau tidak tahu apa perlu dibuat", example: "Dia seperti hilang akal apabila rumahnya terbakar." },
+    { idiom: "Ikat perut", meaning: "Menahan lapar kerana hendak berjimat", example: "Kami terpaksa ikat perut pada hujung bulan." },
+    { idiom: "Iri hati", meaning: "Cemburu atau dengki", example: "Jangan iri hati dengan kejayaan orang lain." },
+    { idiom: "Jalan buntu", meaning: "Tidak mendapat penyelesaian", example: "Perbincangan itu menemui jalan buntu." },
+    { idiom: "Kacang hantu", meaning: "Orang yang jahat atau pengacau", example: "Budak kacang hantu itu selalu mengganggu kelas." },
+    { idiom: "Kaki ayam", meaning: "Tidak memakai kasut", example: "Adik berlari kaki ayam di halaman rumah." },
+    { idiom: "Kaki bangku", meaning: "Tidak pandai bermain bola", example: "Dia kaki bangku, sebab itu dia jadi penjaga gol sahaja." },
+    { idiom: "Kaki botol", meaning: "Suka minum minuman keras", example: "Jauhi tabiat menjadi kaki botol." },
+    { idiom: "Kecil hati", meaning: "Tersinggung atau merajuk", example: "Ibu kecil hati dengan kata-kata kamu tadi." },
+    { idiom: "Kepala angin", meaning: "Perangai yang kerap berubah-ubah", example: "Susah berkawan dengan orang kepala angin." },
+    { idiom: "Kera sumbang", meaning: "Orang yang tidak suka bergaul", example: "Jangan jadi kera sumbang, bergaullah dengan jiran." },
+    { idiom: "Kuku besi", meaning: "Pemerintahan yang kejam atau keras", example: "Rakyat menentang pemerintahan kuku besi itu." },
+    { idiom: "Langkah seribu", meaning: "Lari sekuat hati kerana takut", example: "Mereka buka langkah seribu apabila dikejar anjing." },
+    { idiom: "Lepas tangan", meaning: "Tidak mahu bertanggungjawab", example: "Jangan lepas tangan setelah membuat kerosakan." },
+    { idiom: "Lintah darat", meaning: "Mengambil keuntungan berlebihan (bunga tinggi)", example: "Peminjam wang itu bersikap seperti lintah darat." },
+    { idiom: "Makan angin", meaning: "Pergi bercuti atau bersiar-siar", example: "Kami sekeluarga akan pergi makan angin di Langkawi." },
+    { idiom: "Makan suap", meaning: "Menerima rasuah", example: "Pegawai itu ditangkap kerana makan suap." },
+    { idiom: "Mandi peluh", meaning: "Bekerja dengan kuat", example: "Ayah mandi peluh di sawah demi menyara keluarga." },
+    { idiom: "Masuk akal", meaning: "Boleh diterima oleh fikiran waras", example: "Alasan dia lewat ke sekolah tidak masuk akal." },
+    { idiom: "Mata duitan", meaning: "Mementingkan wang semata-mata", example: "Wanita itu dituduh mata duitan." },
+    { idiom: "Mulut murai", meaning: "Orang yang suka bercakap banyak", example: "Diam sikit, jangan jadi mulut murai." },
+    { idiom: "Musuh dalam selimut", meaning: "Orang dipercayai yang mengkhianati kita", example: "Berhati-hati dengan musuh dalam selimut." },
+    { idiom: "Naik angin", meaning: "Menjadi marah", example: "Cikgu naik angin apabila murid bising." },
+    { idiom: "Nyawa-nyawa ikan", meaning: "Hampir mati", example: "Ikan itu sudah nyawa-nyawa ikan." },
+    { idiom: "Otak udang", meaning: "Bodoh atau bebal", example: "Jangan jadi otak udang, belajarlah bersungguh-sungguh." },
+    { idiom: "Panjang tangan", meaning: "Suka mencuri", example: "Pekerja panjang tangan itu telah diberhentikan." },
+    { idiom: "Pasang telinga", meaning: "Mendengar dengan teliti", example: "Pasang telinga baik-baik semasa guru mengajar." },
+    { idiom: "Patah hati", meaning: "Kecewa", example: "Dia patah hati setelah gagal dalam ujian." },
+    { idiom: "Pekak badak", meaning: "Pura-pura tidak mendengar", example: "Dipanggil berkali-kali pun dia buat pekak badak." },
+    { idiom: "Puteri lilin", meaning: "Wanita yang tidak tahan panas", example: "Dia tidak mahu berjemur kerana dia puteri lilin." },
+    { idiom: "Putih mata", meaning: "Kecewa kerana harapan tidak tercapai", example: "Ali putih mata apabila tiket konsert habis dijual." },
+    { idiom: "Rabun ayam", meaning: "Penglihatan kabur pada waktu senja", example: "Datuk tidak memandu malam kerana rabun ayam." },
+    { idiom: "Rambang mata", meaning: "Sukar membuat pilihan kerana banyak", example: "Saya rambang mata melihat jualan murah itu." },
+    { idiom: "Ringan tulang", meaning: "Rajin bekerja atau menolong", example: "Jadilah orang yang ringan tulang membantu ibu bapa." },
+    { idiom: "Tanda mata", meaning: "Hadiah sebagai kenang-kenangan", example: "Terimalah cenderahati ini sebagai tanda mata." },
+    { idiom: "Telinga lintah", meaning: "Pendengaran yang sangat tajam", example: "Dia telinga lintah, bisik pun dia boleh dengar." },
+    { idiom: "Tidur-tidur ayam", meaning: "Tidur yang tidak lena", example: "Saya hanya tidur-tidur ayam kerana bimbangkan anak sakit." },
+    { idiom: "Tulang belakang", meaning: "Orang yang menjadi kekuatan kumpulan", example: "Dia adalah tulang belakang pasukan bola sepak sekolah." }
+];
+
+export const PERIBAHASA_DATA: SimpulanData[] = [
+    { idiom: "Melentur buluh biarlah dari rebungnya", meaning: "Mendidik anak biarlah sejak mereka kecil lagi", example: "Ibu bapa perlu mengajar nilai murni sejak kecil, bak kata pepatah melentur buluh biarlah dari rebungnya." },
+    { idiom: "Bagai kacang lupakan kulit", meaning: "Orang yang tidak mengenang budi", example: "Janganlah jadi seperti bagai kacang lupakan kulit apabila sudah berjaya nanti." },
+    { idiom: "Di mana bumi dipijak, di situ langit dijunjung", meaning: "Mengikut adat resam di tempat kita berada", example: "Apabila merantau ke negara orang, ingatlah pepatah di mana bumi dipijak, di situ langit dijunjung." },
+    { idiom: "Sedikit-sedikit, lama-lama jadi bukit", meaning: "Sabar dan tekun mengerjakan sesuatu, akhirnya berhasil juga", example: "Ali menabung setiap hari seringgit, kerana dia percaya sedikit-sedikit, lama-lama jadi bukit." },
+    { idiom: "Sediakan payung sebelum hujan", meaning: "Berwaspada sebelum ditimpa kesusahan", example: "Kita perlu menabung untuk masa depan ibarat sediakan payung sebelum hujan." },
+    { idiom: "Bagai isi dengan kuku", meaning: "Hubungan persahabatan yang sangat erat", example: "Persahabatan mereka bagai isi dengan kuku, ke mana sahaja pasti bersama." },
+    { idiom: "Bagai melepaskan batuk di tangga", meaning: "Membuat sesuatu kerja dengan tidak bersungguh-sungguh", example: "Janganlah buat kerja sekolah bagai melepaskan batuk di tangga." },
+    { idiom: "Harapkan pagar, pagar makan padi", meaning: "Orang yang dipercayai mengkhianati kita", example: "Dia mencuri duit syarikat, sungguh tak sangka harapkan pagar, pagar makan padi." },
+    { idiom: "Bagai tikus membaiki labu", meaning: "Orang yang cuba membaiki sesuatu tetapi makin merosakkannya", example: "Ali cuba membaiki radio itu tetapi rosak teruk, ibarat bagai tikus membaiki labu." },
+    { idiom: "Seperti katak di bawah tempurung", meaning: "Orang yang cetek pengetahuannya", example: "Jangan jadi seperti katak di bawah tempurung, rajinlah membaca." },
+    { idiom: "Alang-alang menyeluk pekasam biar sampai ke pangkal lengan", meaning: "Melakukan sesuatu biarlah sehingga berjaya", example: "Teruskan usaha kamu, alang-alang menyeluk pekasam biar sampai ke pangkal lengan." },
+    { idiom: "Bagai mencurah air ke daun keladi", meaning: "Nasihat yang sia-sia", example: "Menasihati dia ibarat bagai mencurah air ke daun keladi." },
+    { idiom: "Indah khabar dari rupa", meaning: "Perkhabaran yang dilebih-lebihkan dari keadaan sebenar", example: "Keadaan di sana tidaklah secantik yang diceritakan, indah khabar dari rupa." },
+    { idiom: "Masa itu emas", meaning: "Masa sangat berharga", example: "Gunakanlah masa lapang dengan berfaedah kerana masa itu emas." },
+    { idiom: "Biar mati anak, jangan mati adat", meaning: "Adat resam yang mesti dipertahankan", example: "Masyarakat lama berpegang teguh pada prinsip biar mati anak, jangan mati adat." },
+    { idiom: "Ukur baju di badan sendiri", meaning: "Berbelanja mengikut kemampuan diri", example: "Jangan berhutang keliling pinggang, ukurlah baju di badan sendiri." },
+    { idiom: "Sehari selembar benang, lama-lama menjadi kain", meaning: "Usaha gigih yang berterusan akan membawa kejayaan", example: "Walaupun lambat, projek itu siap juga berkat prinsip sehari selembar benang, lama-lama menjadi kain." },
+    { idiom: "Kalau tidak dipecahkan ruyung, manakan dapat sagunya", meaning: "Kejayaan tidak akan datang tanpa usaha", example: "Kita mesti berusaha keras jika mahu berjaya, kalau tidak dipecahkan ruyung, manakan dapat sagunya." },
+    { idiom: "Bagai bulan dipagar bintang", meaning: "Kecantikan gadis yang tiada tandingannya", example: "Kecantikan pengantin perempuan itu ibarat bagai bulan dipagar bintang." },
+    { idiom: "Bagai anjing dengan kucing", meaning: "Sering bergaduh apabila berjumpa", example: "Adik-beradik itu asyik bergaduh bagai anjing dengan kucing." },
+    { idiom: "Genggam bara api biar sampai jadi arang", meaning: "Membuat sesuatu pekerjaan yang susah hendaklah sabar sehingga berjaya", example: "Jangan mudah putus asa, genggam bara api biar sampai jadi arang." },
+    { idiom: "Yang bulat tidak datang menggolek, yang pipih tidak datang melayang", meaning: "Rezeki tidak datang tanpa usaha", example: "Berusahalah mencari rezeki kerana yang bulat tidak datang menggolek, yang pipih tidak datang melayang." },
+    { idiom: "Hujan emas di negeri orang, hujan batu di negeri sendiri", meaning: "Walau baik mana pun tempat orang, tempat sendiri lebih baik", example: "Dia pulang ke tanah air kerana hujan emas di negeri orang, hujan batu di negeri sendiri." },
+    { idiom: "Lembu punya susu, sapi dapat nama", meaning: "Orang lain yang berusaha, orang lain yang dapat puji", example: "Ahmad yang bertungkus-lumus, tetapi ketuanya yang dipuji, ibarat lembu punya susu, sapi dapat nama." },
+    { idiom: "Malu bertanya sesat jalan", meaning: "Kalau segan bertanya, kita akan rugi", example: "Tanyalah guru jika tidak faham, malu bertanya sesat jalan." },
+    { idiom: "Berat sama dipikul, ringan sama dijinjing", meaning: "Suka duka ditanggung bersama / Bekerjasama", example: "Penduduk kampung itu mengamalkan sikap berat sama dipikul, ringan sama dijinjing semasa gotong-royong." },
+    { idiom: "Masuk telinga kanan, keluar telinga kiri", meaning: "Tidak mendengar nasihat", example: "Nasihat ibu hanya masuk telinga kanan, keluar telinga kiri baginya." },
+    { idiom: "Seperti kera mendapat bunga", meaning: "Tidak tahu menghargai pemberian", example: "Memberi hadiah mahal kepadanya ibarat seperti kera mendapat bunga." },
+    { idiom: "Berakit-rakit ke hulu, berenang-renang ke tepian", meaning: "Bersusah-susah dahulu, bersenang-senang kemudian", example: "Belajarlah sekarang demi masa depan, berakit-rakit ke hulu, berenang-renang ke tepian." },
+    { idiom: "Bagai pinang dibelah dua", meaning: "Pasangan yang sangat sepadan", example: "Pengantin itu sama cantik sama padan bagai pinang dibelah dua." }
+];
+
+export const SCIENCE_QUESTIONS: Question[] = [
+    { id: 'sc1', text: 'Planet Marikh dikenali sebagai Planet Merah.', answer: true, type: 'boolean', explanation: 'Ia kelihatan merah kerana oksida besi di permukaannya.' },
+    { id: 'sc2', text: 'Jantung manusia mempunyai 3 ruang.', answer: false, type: 'boolean', explanation: 'Jantung manusia mempunyai 4 ruang (2 atrium, 2 ventrikel).' },
+    { id: 'sc3', text: 'Tumbuhan memerlukan cahaya matahari untuk fotosintesis.', answer: true, type: 'boolean', explanation: 'Cahaya matahari adalah sumber tenaga utama untuk tumbuhan.' },
+    { id: 'sc4', text: 'Ikan paus adalah sejenis ikan.', answer: false, type: 'boolean', explanation: 'Paus adalah mamalia, bukan ikan. Ia melahirkan anak.' },
+    { id: 'sc5', text: 'Bumi adalah planet ketiga dari Matahari.', answer: true, type: 'boolean', explanation: 'Susunan: Utarid, Zuhrah, Bumi.' },
+    { id: 'sc6', text: 'Air mendidih pada suhu 100 darjah Celcius.', answer: true, type: 'boolean', explanation: 'Ini adalah takat didih air tulen.' },
+    { id: 'sc7', text: 'Ular adalah haiwan invertebrata (tiada tulang belakang).', answer: false, type: 'boolean', explanation: 'Ular adalah vertebrata, ia mempunyai tulang belakang yang panjang.' },
+    { id: 'sc8', text: 'Bulan mengeluarkan cahayanya sendiri.', answer: false, type: 'boolean', explanation: 'Bulan hanya memantulkan cahaya dari Matahari.' },
+    { id: 'sc9', text: 'Magnet boleh menarik paku besi.', answer: true, type: 'boolean', explanation: 'Besi adalah bahan magnetik.' },
+    { id: 'sc10', text: 'Manusia bernafas menggunakan insang.', answer: false, type: 'boolean', explanation: 'Manusia bernafas menggunakan peparu.' },
+    { id: 'sc11', text: 'Katak adalah haiwan amfibia.', answer: true, type: 'boolean', explanation: 'Amfibia boleh hidup di darat dan di air.' },
+    { id: 'sc12', text: 'Matahari bergerak mengelilingi Bumi.', answer: false, type: 'boolean', explanation: 'Tidak, Bumi yang bergerak mengelilingi Matahari.' },
+    { id: 'sc13', text: 'Telinga digunakan untuk deria bau.', answer: false, type: 'boolean', explanation: 'Telinga untuk mendengar, hidung untuk bau.' },
+    { id: 'sc14', text: 'Bateri membekalkan tenaga elektrik.', answer: true, type: 'boolean', explanation: 'Bateri menukar tenaga kimia kepada tenaga elektrik.' },
+    { id: 'sc15', text: 'Ais adalah air dalam keadaan pepejal.', answer: true, type: 'boolean', explanation: 'Apabila air membeku, ia menjadi ais (pepejal).' },
+    { id: 'sc16', text: 'Harimau adalah haiwan herbivor.', answer: false, type: 'boolean', explanation: 'Harimau adalah karnivor, ia makan daging.' },
+    { id: 'sc17', text: 'Bayang-bayang terbentuk apabila cahaya dihalang.', answer: true, type: 'boolean', explanation: 'Objek legap menghalang cahaya lalu membentuk bayang-bayang.' },
+    { id: 'sc18', text: 'Pengaratan berlaku apabila besi terkena air dan udara.', answer: true, type: 'boolean', explanation: 'Air dan Oksigen diperlukan untuk pengaratan.' },
+    { id: 'sc19', text: 'Burung Penguin boleh terbang tinggi.', answer: false, type: 'boolean', explanation: 'Penguin adalah burung yang tidak boleh terbang.' },
+    { id: 'sc20', text: 'Gigi susu akan kekal selamanya.', answer: false, type: 'boolean', explanation: 'Gigi susu akan tanggal dan diganti dengan gigi kekal.' },
+    { id: 'sc21', text: 'Kertas diperbuat daripada pokok.', answer: true, type: 'boolean', explanation: 'Kayu pokok diproses menjadi pulpa untuk membuat kertas.' },
+    { id: 'sc22', text: 'Planet Musytari adalah planet terbesar dalam sistem suria.', answer: true, type: 'boolean', explanation: 'Musytari (Jupiter) adalah planet gergasi gas.' },
+    { id: 'sc23', text: 'Kulit adalah organ deria sentuhan.', answer: true, type: 'boolean', explanation: 'Kulit mengesan panas, sejuk, sakit dan tekanan.' },
+    { id: 'sc24', text: 'Semua logam boleh ditarik oleh magnet.', answer: false, type: 'boolean', explanation: 'Bukan semua. Emas dan aluminium tidak ditarik magnet.' },
+    { id: 'sc25', text: 'Akar tumbuhan menyerap air dari tanah.', answer: true, type: 'boolean', explanation: 'Fungsi utama akar adalah menyerap air dan nutrien.' },
+    { id: 'sc26', text: 'Manusia mempunyai 5 deria.', answer: true, type: 'boolean', explanation: 'Lihat, Dengar, Bau, Rasa, Sentuh.' },
+    { id: 'sc27', text: 'Tahun lompat berlaku setiap 2 tahun.', answer: false, type: 'boolean', explanation: 'Tahun lompat berlaku setiap 4 tahun sekali.' },
+    { id: 'sc28', text: 'Oksigen diperlukan untuk pembakaran.', answer: true, type: 'boolean', explanation: 'Tanpa oksigen, api akan padam.' },
+    { id: 'sc29', text: 'Labah-labah mempunyai 6 kaki.', answer: false, type: 'boolean', explanation: 'Labah-labah mempunyai 8 kaki (Araknida), serangga ada 6.' },
+    { id: 'sc30', text: 'Buaya bertelur untuk membiak.', answer: true, type: 'boolean', explanation: 'Buaya adalah reptilia yang bertelur.' },
+    { id: 'sc31', text: 'Cahaya bergerak lurus.', answer: true, type: 'boolean', explanation: 'Sebab itu kita tidak boleh melihat di sebalik dinding.' },
+    { id: 'sc32', text: 'Batu akan terapung di atas air.', answer: false, type: 'boolean', explanation: 'Batu lebih tumpat daripada air, ia akan tenggelam.' },
+    { id: 'sc33', text: 'Pokok kaktus hidup di kawasan gurun.', answer: true, type: 'boolean', explanation: 'Ia menyimpan air dalam batangnya untuk bertahan.' },
+    { id: 'sc34', text: 'Susu mengandungi kalsium untuk kuatkan tulang.', answer: true, type: 'boolean', explanation: 'Kalsium penting untuk pertumbuhan tulang dan gigi.' },
+    { id: 'sc35', text: 'Matahari adalah sebuah bintang.', answer: true, type: 'boolean', explanation: 'Ia adalah bintang yang paling dekat dengan Bumi.' }
+];
+
+export const SCRAMBLE_WORDS: Question[] = [
+    { id: 'w1', text: 'K U B A', answer: 'BUKU', explanation: 'Bahan bacaan' },
+    { id: 'w2', text: 'L O B A', answer: 'BOLA', explanation: 'Alat sukan bulat' },
+    { id: 'w3', text: 'H O S E L A K', answer: 'SEKOLAH', explanation: 'Tempat belajar' },
+    { id: 'w4', text: 'G I C K U', answer: 'CIKGU', explanation: 'Orang yang mengajar' },
+    { id: 'w5', text: 'M A P E D A M', answer: 'PEMADAM', explanation: 'Alat tulis' },
+    { id: 'w6', text: 'T E R E K A', answer: 'KERETA', explanation: 'Kenderaan empat roda' },
+    { id: 'w7', text: 'K U C G I N', answer: 'KUCING', explanation: 'Haiwan peliharaan' },
+    { id: 'w8', text: 'P I N S E L', answer: 'PENSEL', explanation: 'Alat tulis kayu' },
+    { id: 'w9', text: 'K E R U S I', answer: 'KERUSI', explanation: 'Tempat duduk' },
+    { id: 'w10', text: 'M A K A N A N', answer: 'MAKANAN', explanation: 'Benda yang dimakan' },
+    { id: 'w11', text: 'M I N U M A N', answer: 'MINUMAN', explanation: 'Air untuk diminum' },
+    { id: 'w12', text: 'T E L E F O N', answer: 'TELEFON', explanation: 'Alat komunikasi' },
+    { id: 'w13', text: 'K A M P U G N', answer: 'KAMPUNG', explanation: 'Kawasan desa' },
+    { id: 'w14', text: 'B A S I K A L', answer: 'BASIKAL', explanation: 'Kenderaan dua roda' },
+    { id: 'w15', text: 'S A Y U R A N', answer: 'SAYURAN', explanation: 'Makanan sihat hijau' },
+    { id: 'w16', text: 'H O S P I T A L', answer: 'HOSPITAL', explanation: 'Tempat rawatan' },
+    { id: 'w17', text: 'P O L I S', answer: 'POLIS', explanation: 'Penjaga keamanan' },
+    { id: 'w18', text: 'B O M B A', answer: 'BOMBA', explanation: 'Pemadam api' },
+    { id: 'w19', text: 'D O K T O R', answer: 'DOKTOR', explanation: 'Merawat pesakit' },
+    { id: 'w20', text: 'G A J A H', answer: 'GAJAH', explanation: 'Haiwan darat terbesar' },
+    { id: 'w21', text: 'H A R I M A U', answer: 'HARIMAU', explanation: 'Raja rimba' },
+    { id: 'w22', text: 'M A T A H A R I', answer: 'MATAHARI', explanation: 'Sumber cahaya bumi' },
+    { id: 'w23', text: 'B I N T A N G', answer: 'BINTANG', explanation: 'Berkelip di langit malam' },
+    { id: 'w24', text: 'P E L A N G I', answer: 'PELANGI', explanation: 'Tujuh warna di langit' },
+    { id: 'w25', text: 'K O M P U T E R', answer: 'KOMPUTER', explanation: 'Alat teknologi canggih' }
+];
+
+export const generateMathQuestion = (difficulty: 'Mudah' | 'Sederhana' | 'Mencabar'): Question => {
+    let num1, num2, operator, ans;
+    const ops = ['+', '-', 'x'];
+    const selectedOp = ops[Math.floor(Math.random() * ops.length)];
+
+    if (difficulty === 'Mudah') {
+        num1 = Math.floor(Math.random() * 50) + 1;
+        num2 = Math.floor(Math.random() * 50) + 1;
+    } else {
+        num1 = Math.floor(Math.random() * 100) + 10;
+        num2 = Math.floor(Math.random() * 50) + 5;
+    }
+
+    if (selectedOp === '+') ans = num1 + num2;
+    else if (selectedOp === '-') {
+        if (num1 < num2) [num1, num2] = [num2, num1]; // Ensure positive
+        ans = num1 - num2;
+    } else {
+        // Multiplication - keep numbers smaller
+        num1 = Math.floor(Math.random() * 12) + 2;
+        num2 = Math.floor(Math.random() * 12) + 2;
+        ans = num1 * num2;
+    }
+
+    return {
+        id: `m-${Date.now()}`,
+        text: `${num1} ${selectedOp === 'x' ? '×' : selectedOp} ${num2} = ?`,
+        answer: ans,
+        type: 'math'
+    };
+};
