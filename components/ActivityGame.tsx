@@ -46,11 +46,6 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
     const [wasStolen, setWasStolen] = useState(false);
     const stealTimerRef = useRef<number | null>(null);
 
-    // FINAL SHOWDOWN
-    const SHOWDOWN_ROUNDS = 5; // Last 5 rounds are showdown
-    const isShowdown = round > (TOTAL_ROUNDS - SHOWDOWN_ROUNDS);
-    const [showdownAnnounced, setShowdownAnnounced] = useState(false);
-
     // Points earned this round (for display)
     const [pointsEarned, setPointsEarned] = useState(0);
 
@@ -70,6 +65,11 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
     const SPEED_THRESHOLD = 5;
     const STEAL_TIME = 5; // seconds
     const STEAL_POINTS = 75;
+    const SHOWDOWN_ROUNDS = 5; // Last 5 rounds are showdown
+
+    // FINAL SHOWDOWN - computed after TOTAL_ROUNDS is defined
+    const isShowdown = round > (TOTAL_ROUNDS - SHOWDOWN_ROUNDS);
+    const [showdownAnnounced, setShowdownAnnounced] = useState(false);
 
     // STREAK MULTIPLIER
     const getStreakMultiplier = (streakCount: number): number => {
