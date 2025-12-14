@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Activity, TeamId, Question, AppContextType } from '../types';
 import { generateMathQuestion, SIMPULAN_BAHASA_DATA, PERIBAHASA_DATA, SCIENCE_QUESTIONS, SCRAMBLE_WORDS } from '../data/content';
 import { COUNTRIES_DATA, Country } from '../data/countries';
-import { Check, X, Timer, Play, Pause, ArrowRight, Home, Zap, Send, Undo2, AlertTriangle, Flame, Siren, Target, Globe, Rocket } from 'lucide-react';
+import { Check, X, Timer, Play, Pause, ArrowRight, Home, Zap, Send, Undo2, AlertTriangle, Flame, Siren, Target, Globe } from 'lucide-react';
 import { soundEngine } from '../utils/sounds';
 
 interface ActivityGameProps {
@@ -352,7 +352,16 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
     const handleStealAttempt = (answer: any) => {
         if (!stealAvailableFor) return;
 
-        const isCorrect = answer === currentQuestion?.answer;
+        let isCorrect: boolean;
+        if (activity.type === 'hangman') {
+            // For hangman, compare country names (case-insensitive, ignore spaces)
+            const userGuess = String(answer).toUpperCase().replace(/\s/g, '');
+            const correctAnswer = (currentCountry?.name || '').toUpperCase().replace(/\s/g, '');
+            isCorrect = userGuess === correctAnswer;
+        } else {
+            isCorrect = answer === currentQuestion?.answer;
+        }
+
         soundEngine.play('buzzer');
         handleAnswer(isCorrect, stealAvailableFor, true);
     };
@@ -648,7 +657,43 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
                         </div>
 
                         {/* Steal Answer Options */}
-                        {currentQuestion?.options ? (
+                        {activity.type === 'hangman' ? (
+                            // Hangman steal: Type the full country name
+                            <div className="w-full max-w-xl">
+                                <div className="bg-slate-100 p-4 rounded-xl mb-4 border-2 border-slate-300">
+                                    <p className="text-lg text-slate-600 mb-2">Huruf yang sudah terbuka:</p>
+                                    <p className="text-3xl font-mono font-black tracking-widest text-slate-800">
+                                        {getDisplayWord()}
+                                    </p>
+                                </div>
+                                <p className="text-xl text-slate-500 mb-4">Taip nama negara penuh:</p>
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const guess = userInput.toUpperCase().trim();
+                                    const correct = currentCountry?.name.toUpperCase() || '';
+                                    handleStealAttempt(guess === correct ? correct : guess);
+                                }} className="flex flex-col gap-4">
+                                    <input
+                                        type="text"
+                                        value={userInput}
+                                        onChange={(e) => setUserInput(e.target.value)}
+                                        placeholder="Taip nama negara..."
+                                        className={`w-full text-center text-3xl font-bold p-4 rounded-xl border-4 ${
+                                            stealAvailableFor === 'boys' ? 'border-blue-400 focus:border-blue-600' : 'border-pink-400 focus:border-pink-600'
+                                        } outline-none uppercase`}
+                                        autoFocus
+                                    />
+                                    <button
+                                        type="submit"
+                                        className={`w-full py-4 text-white text-2xl font-black rounded-xl border-4 border-slate-900 shadow-pop ${
+                                            stealAvailableFor === 'boys' ? 'bg-blue-500' : 'bg-pink-500'
+                                        }`}
+                                    >
+                                        CURI JAWAPAN!
+                                    </button>
+                                </form>
+                            </div>
+                        ) : currentQuestion?.options ? (
                             <div className="grid grid-cols-2 gap-4">
                                 {currentQuestion.options.map((opt, idx) => (
                                     <button
@@ -801,39 +846,51 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
                         ) : activity.type === 'hangman' ? (
                             // HANGMAN / TEKA NEGARA UI
                             <div className="w-full flex flex-col items-center">
-                                {/* Rocket Progress */}
+                                {/* Emoji Face Progress */}
                                 <div className="flex items-center gap-8 mb-8">
                                     <div className="flex flex-col items-center">
-                                        <div className={`text-6xl transition-transform duration-300 ${wrongGuesses >= MAX_WRONG_GUESSES ? 'opacity-50' : ''}`}
-                                            style={{ transform: `translateY(-${(MAX_WRONG_GUESSES - wrongGuesses) * 10}px)` }}>
-                                            <Rocket size={64} className={wrongGuesses >= MAX_WRONG_GUESSES ? 'text-red-500' : 'text-green-500'} />
+                                        {/* Emoji yang bertukar mengikut salah teka */}
+                                        <div className="text-8xl mb-2 transition-all duration-300" style={{
+                                            transform: wrongGuesses >= MAX_WRONG_GUESSES ? 'rotate(90deg)' : 'rotate(0deg)',
+                                            filter: wrongGuesses >= MAX_WRONG_GUESSES ? 'grayscale(100%)' : 'none'
+                                        }}>
+                                            {wrongGuesses === 0 && '😀'}
+                                            {wrongGuesses === 1 && '😊'}
+                                            {wrongGuesses === 2 && '😐'}
+                                            {wrongGuesses === 3 && '😟'}
+                                            {wrongGuesses === 4 && '😰'}
+                                            {wrongGuesses === 5 && '😱'}
+                                            {wrongGuesses >= 6 && '💀'}
                                         </div>
-                                        <div className="flex gap-1 mt-4">
+                                        {/* Progress dots */}
+                                        <div className="flex gap-2">
                                             {Array.from({ length: MAX_WRONG_GUESSES }).map((_, i) => (
                                                 <div
                                                     key={i}
-                                                    className={`w-4 h-4 rounded-full transition-colors ${
-                                                        i < wrongGuesses ? 'bg-red-500' : 'bg-green-400'
+                                                    className={`w-5 h-5 rounded-full border-2 transition-all duration-300 ${
+                                                        i < wrongGuesses
+                                                            ? 'bg-red-500 border-red-700 scale-75'
+                                                            : 'bg-green-400 border-green-600'
                                                     }`}
                                                 />
                                             ))}
                                         </div>
-                                        <span className="text-sm font-bold text-slate-500 mt-2">
-                                            {MAX_WRONG_GUESSES - wrongGuesses} peluang lagi
+                                        <span className="text-lg font-black text-slate-600 mt-3">
+                                            {MAX_WRONG_GUESSES - wrongGuesses} peluang
                                         </span>
                                     </div>
 
                                     {/* Hint */}
                                     {currentCountry?.hint && (
-                                        <div className="bg-yellow-100 px-6 py-3 rounded-xl border-4 border-yellow-300">
+                                        <div className="bg-yellow-100 px-6 py-4 rounded-xl border-4 border-yellow-300 shadow-sm">
                                             <span className="text-sm font-bold text-yellow-700 uppercase">Petunjuk:</span>
-                                            <p className="text-xl font-bold text-yellow-800">{currentCountry.hint}</p>
+                                            <p className="text-2xl font-bold text-yellow-800">{currentCountry.hint}</p>
                                         </div>
                                     )}
 
-                                    <div className="bg-purple-100 px-6 py-3 rounded-xl border-4 border-purple-300">
+                                    <div className="bg-purple-100 px-6 py-4 rounded-xl border-4 border-purple-300 shadow-sm">
                                         <span className="text-sm font-bold text-purple-700 uppercase">Benua:</span>
-                                        <p className="text-xl font-bold text-purple-800">{currentCountry?.continent}</p>
+                                        <p className="text-2xl font-bold text-purple-800">{currentCountry?.continent}</p>
                                     </div>
                                 </div>
 
