@@ -247,10 +247,10 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
             const totalPoints = Math.round(basePoints * streakMultiplier * showdownMultiplier);
             setPointsEarned(totalPoints);
 
-            // Update streak
+            // Update streak - only increment for scoring team, keep other team's streak
             setStreak(prev => ({
-                boys: scoringTeam === 'boys' ? prev.boys + 1 : 0,
-                girls: scoringTeam === 'girls' ? prev.girls + 1 : 0
+                ...prev,
+                [scoringTeam]: prev[scoringTeam] + 1
             }));
             setLastStreakTeam(scoringTeam);
 
