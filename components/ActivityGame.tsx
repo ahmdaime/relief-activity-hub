@@ -2,7 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Activity, TeamId, Question, AppContextType } from '../types';
 import { generateMathQuestion, SIMPULAN_BAHASA_DATA, PERIBAHASA_DATA, SCIENCE_QUESTIONS, SCRAMBLE_WORDS } from '../data/content';
-import { Check, X, Timer, Play, Pause, ArrowRight, Home, Zap, Send, Undo2, AlertTriangle, Flame, Siren, Target } from 'lucide-react';
+import { COUNTRIES_DATA, Country } from '../data/countries';
+import { Check, X, Timer, Play, Pause, ArrowRight, Home, Zap, Send, Undo2, AlertTriangle, Flame, Siren, Target, Globe, Rocket } from 'lucide-react';
 import { soundEngine } from '../utils/sounds';
 
 interface ActivityGameProps {
@@ -27,7 +28,11 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
     const [buzzedTeam, setBuzzedTeam] = useState<TeamId | null>(null);
 
     // Timer Settings
-    const getMaxTime = () => activity.type === 'math' ? 60 : 45;
+    const getMaxTime = () => {
+        if (activity.type === 'math') return 60;
+        if (activity.type === 'hangman') return 90; // More time for hangman
+        return 45;
+    };
     const [turnTimer, setTurnTimer] = useState(getMaxTime());
 
     const [winner, setWinner] = useState<TeamId | 'draw' | null>(null);
@@ -49,6 +54,13 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
     // Points earned this round (for display)
     const [pointsEarned, setPointsEarned] = useState(0);
 
+    // ============ HANGMAN STATE ============
+    const [currentCountry, setCurrentCountry] = useState<Country | null>(null);
+    const [guessedLetters, setGuessedLetters] = useState<Set<string>>(new Set());
+    const [wrongGuesses, setWrongGuesses] = useState(0);
+    const MAX_WRONG_GUESSES = 6;
+    const [hangmanUsedIndices, setHangmanUsedIndices] = useState<Set<number>>(new Set());
+
     // ============================================
 
     // Question Management
@@ -58,7 +70,7 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
     const timerRef = useRef<number | null>(null);
 
     // Constants
-    const TOTAL_ROUNDS = (activity.id === 'peribahasa-challenge' || activity.id === 'simpulan-bahasa' || activity.id === 'math-quickfire' || activity.id === 'sains-fakta') ? 30 : 10;
+    const TOTAL_ROUNDS = (activity.id === 'peribahasa-challenge' || activity.id === 'simpulan-bahasa' || activity.id === 'math-quickfire' || activity.id === 'sains-fakta') ? 30 : (activity.type === 'hangman' ? 15 : 10);
     const POINTS_PER_CORRECT = 100;
     const POINTS_PER_WRONG = 50;
     const SPEED_BONUS_POINTS = 50;
@@ -144,6 +156,31 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
             setUsedQuestionIndices(prev => new Set(prev).add(randomIndex));
             q = sourceData[randomIndex];
 
+        } else if (activity.type === 'hangman') {
+            // Hangman / Teka Negara
+            let availableIndices = COUNTRIES_DATA.map((_, idx) => idx)
+                .filter(idx => !hangmanUsedIndices.has(idx));
+
+            if (availableIndices.length === 0) {
+                availableIndices = COUNTRIES_DATA.map((_, idx) => idx);
+                setHangmanUsedIndices(new Set());
+            }
+
+            const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            setHangmanUsedIndices(prev => new Set(prev).add(randomIndex));
+
+            const country = COUNTRIES_DATA[randomIndex];
+            setCurrentCountry(country);
+            setGuessedLetters(new Set());
+            setWrongGuesses(0);
+
+            q = {
+                id: `country-${randomIndex}`,
+                text: country.name,
+                answer: country.name,
+                explanation: country.hint || country.continent,
+                type: 'text'
+            };
         } else {
             const scrambleQ = SCRAMBLE_WORDS[(round - 1) % SCRAMBLE_WORDS.length];
             q = scrambleQ;
@@ -160,6 +197,12 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
         setWasStolen(false);
         setPointsEarned(0);
         setTurnTimer(getMaxTime());
+
+        // Reset hangman state for new round
+        if (activity.type === 'hangman') {
+            setGuessedLetters(new Set());
+            setWrongGuesses(0);
+        }
     };
 
     // Timer Effect
@@ -332,6 +375,53 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
         const correctAnswer = currentQuestion?.answer as number;
 
         handleAnswer(userAnswer === correctAnswer, buzzedTeam);
+    };
+
+    // HANGMAN FUNCTIONS
+    const handleLetterGuess = (letter: string) => {
+        if (guessedLetters.has(letter) || feedback) return;
+
+        const newGuessedLetters = new Set(guessedLetters).add(letter);
+        setGuessedLetters(newGuessedLetters);
+
+        const countryName = currentCountry?.name || '';
+        const isCorrectGuess = countryName.toUpperCase().includes(letter);
+
+        if (isCorrectGuess) {
+            soundEngine.play('correct');
+
+            // Check if word is complete
+            const isComplete = countryName.toUpperCase().split('').every(
+                char => char === ' ' || newGuessedLetters.has(char)
+            );
+
+            if (isComplete) {
+                // Word completed!
+                handleAnswer(true);
+            }
+        } else {
+            soundEngine.play('wrong');
+            const newWrongGuesses = wrongGuesses + 1;
+            setWrongGuesses(newWrongGuesses);
+
+            if (newWrongGuesses >= MAX_WRONG_GUESSES) {
+                // Game over - lost
+                handleAnswer(false);
+            }
+        }
+    };
+
+    const getDisplayWord = (): string => {
+        if (!currentCountry) return '';
+        return currentCountry.name
+            .toUpperCase()
+            .split('')
+            .map(char => {
+                if (char === ' ') return '  ';
+                if (guessedLetters.has(char)) return char;
+                return '_';
+            })
+            .join(' ');
     };
 
     const nextRound = () => {
@@ -606,6 +696,19 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
                             ))}
                         </div>
                     </div>
+                ) : activity.type === 'hangman' ? (
+                    <div className="w-full flex flex-col items-center mb-6">
+                        <div className="flex items-center gap-4 mb-4">
+                            <Globe size={48} className="text-green-600" />
+                            <h2 className="text-4xl font-black text-slate-800 uppercase tracking-wide">
+                                Teka Nama Negara!
+                            </h2>
+                            <Globe size={48} className="text-green-600" />
+                        </div>
+                        <p className="text-xl text-slate-500 font-medium">
+                            Klik huruf untuk meneka. Anda ada {MAX_WRONG_GUESSES} peluang!
+                        </p>
+                    </div>
                 ) : (
                     <div className={`w-full bg-white border-4 shadow-pop rounded-3xl p-10 mb-10 min-h-[300px] flex items-center justify-center relative ${isShowdown ? 'border-red-500' : 'border-slate-900'}`}>
                         <div className={`absolute -top-6 left-1/2 transform -translate-x-1/2 px-8 py-2 border-4 rounded-full font-black tracking-widest shadow-sm ${isShowdown ? 'bg-red-500 text-white border-red-700' : 'bg-yellow-300 text-slate-900 border-slate-900'}`}>
@@ -694,6 +797,79 @@ export const ActivityGame: React.FC<ActivityGameProps> = ({ activity, context, o
                             <div className="flex gap-8 justify-center w-full">
                                 <button onClick={() => handleAnswer(currentQuestion?.answer === true)} className="flex-1 py-12 bg-green-500 text-white rounded-3xl border-4 border-slate-900 shadow-pop hover:shadow-pop-hover active:translate-y-1 transition-all text-6xl font-black text-outline">BENAR</button>
                                 <button onClick={() => handleAnswer(currentQuestion?.answer === false)} className="flex-1 py-12 bg-red-500 text-white rounded-3xl border-4 border-slate-900 shadow-pop hover:shadow-pop-hover active:translate-y-1 transition-all text-6xl font-black text-outline">PALSU</button>
+                            </div>
+                        ) : activity.type === 'hangman' ? (
+                            // HANGMAN / TEKA NEGARA UI
+                            <div className="w-full flex flex-col items-center">
+                                {/* Rocket Progress */}
+                                <div className="flex items-center gap-8 mb-8">
+                                    <div className="flex flex-col items-center">
+                                        <div className={`text-6xl transition-transform duration-300 ${wrongGuesses >= MAX_WRONG_GUESSES ? 'opacity-50' : ''}`}
+                                            style={{ transform: `translateY(-${(MAX_WRONG_GUESSES - wrongGuesses) * 10}px)` }}>
+                                            <Rocket size={64} className={wrongGuesses >= MAX_WRONG_GUESSES ? 'text-red-500' : 'text-green-500'} />
+                                        </div>
+                                        <div className="flex gap-1 mt-4">
+                                            {Array.from({ length: MAX_WRONG_GUESSES }).map((_, i) => (
+                                                <div
+                                                    key={i}
+                                                    className={`w-4 h-4 rounded-full transition-colors ${
+                                                        i < wrongGuesses ? 'bg-red-500' : 'bg-green-400'
+                                                    }`}
+                                                />
+                                            ))}
+                                        </div>
+                                        <span className="text-sm font-bold text-slate-500 mt-2">
+                                            {MAX_WRONG_GUESSES - wrongGuesses} peluang lagi
+                                        </span>
+                                    </div>
+
+                                    {/* Hint */}
+                                    {currentCountry?.hint && (
+                                        <div className="bg-yellow-100 px-6 py-3 rounded-xl border-4 border-yellow-300">
+                                            <span className="text-sm font-bold text-yellow-700 uppercase">Petunjuk:</span>
+                                            <p className="text-xl font-bold text-yellow-800">{currentCountry.hint}</p>
+                                        </div>
+                                    )}
+
+                                    <div className="bg-purple-100 px-6 py-3 rounded-xl border-4 border-purple-300">
+                                        <span className="text-sm font-bold text-purple-700 uppercase">Benua:</span>
+                                        <p className="text-xl font-bold text-purple-800">{currentCountry?.continent}</p>
+                                    </div>
+                                </div>
+
+                                {/* Word Display */}
+                                <div className="bg-white p-8 rounded-2xl border-4 border-slate-900 shadow-pop mb-8 min-w-[600px]">
+                                    <div className="text-5xl font-mono font-black tracking-[0.3em] text-slate-800 text-center">
+                                        {getDisplayWord()}
+                                    </div>
+                                </div>
+
+                                {/* Letter Keyboard */}
+                                <div className="flex flex-wrap justify-center gap-2 max-w-4xl">
+                                    {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letter => {
+                                        const isGuessed = guessedLetters.has(letter);
+                                        const isInWord = currentCountry?.name.toUpperCase().includes(letter);
+                                        const isCorrect = isGuessed && isInWord;
+                                        const isWrong = isGuessed && !isInWord;
+
+                                        return (
+                                            <button
+                                                key={letter}
+                                                onClick={() => handleLetterGuess(letter)}
+                                                disabled={isGuessed}
+                                                className={`w-14 h-14 text-2xl font-black rounded-xl border-4 transition-all ${
+                                                    isCorrect
+                                                        ? 'bg-green-500 text-white border-green-700 cursor-not-allowed'
+                                                        : isWrong
+                                                        ? 'bg-red-400 text-white border-red-600 cursor-not-allowed opacity-50'
+                                                        : 'bg-white border-slate-900 hover:bg-yellow-100 hover:scale-110 active:scale-95 shadow-pop hover:shadow-pop-hover'
+                                                }`}
+                                            >
+                                                {letter}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         ) : null}
                     </div>

@@ -1,6 +1,6 @@
 
 import { Activity, Question, SimpulanData } from '../types';
-import { BookOpen, Calculator, FlaskConical, Type, Palette, Brain, ScrollText } from 'lucide-react';
+import { BookOpen, Calculator, FlaskConical, Type, Palette, Brain, ScrollText, Globe } from 'lucide-react';
 
 export const ACTIVITIES: Activity[] = [
     {
@@ -52,6 +52,16 @@ export const ACTIVITIES: Activity[] = [
         difficulty: 'Mudah',
         type: 'scramble',
         description: 'Susun semula huruf menjadi perkataan yang betul. Jangan salah eja!'
+    },
+    {
+        id: 'teka-negara',
+        title: 'Teka Negara',
+        icon: Globe,
+        subject: 'Geografi',
+        duration: 15,
+        difficulty: 'Sederhana',
+        type: 'hangman',
+        description: 'Teka nama negara dengan meneka huruf satu persatu. 195 negara menanti!'
     },
 ];
 

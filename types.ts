@@ -17,7 +17,7 @@ export interface Activity {
     subject: string;
     duration: number; // minutes
     difficulty: 'Mudah' | 'Sederhana' | 'Mencabar';
-    type: 'quiz' | 'math' | 'scramble' | 'science';
+    type: 'quiz' | 'math' | 'scramble' | 'science' | 'hangman';
     description: string;
 }
 
